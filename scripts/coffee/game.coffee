@@ -70,6 +70,7 @@ module.exports = class Game
         tox = @random(@game.width)
         toy = @game.width + enemy.height
     enemy.reset(x, y)
+    enemy.angle = 90 + Math.atan2(y - toy, x - tox) * 180 / Math.PI
     @game.add.tween(enemy).to( { x: tox, y: toy }, 4000, Phaser.Easing.Linear.None).start()
 
   random: (num) ->
