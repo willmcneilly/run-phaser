@@ -25,6 +25,7 @@ module.exports = class Game
     @fpsText.update()
     @updatePlayer()
     @updateEnemies()
+    @game.physics.overlap(@player, @enemies, @playerHit, null, this)
 
   createPlayer: ->
     @player = @game.add.sprite 20, 20, 'dude'
@@ -75,3 +76,6 @@ module.exports = class Game
 
   random: (num) ->
     return Math.floor(Math.random() * num)
+
+  playerHit: ->
+    console.log 'hit motherfucker'
