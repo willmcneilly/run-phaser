@@ -8,17 +8,20 @@ module.exports = class Game
 
   preload: ->
     @game.load.spritesheet 'dude', '/assets/images/dude.png', 32, 48
+    @game.load.spritesheet 'enemy', '/assets/images/enemy.png', 26, 24
 
   create: ->
+    @game.stage.backgroundColor = '#eeeeee';
     @fpsText = new FPS(@game)
     @cursor = @game.input.keyboard.createCursorKeys()
     @createPlayer()
-
+    @enemies = @game.add.group()
+    @enemies.createMultiple(30, 'enemy')
+    @enemies.setAll('outOfBoundsKill', true)
 
   update: ->
     @fpsText.update()
     @updatePlayer()
-
 
   createPlayer: ->
     @player = @game.add.sprite 20, 20, 'dude'
