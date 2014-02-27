@@ -1,13 +1,13 @@
 FPS = require './fps'
 
-
-
 module.exports = class Game
   constructor: (game) ->
     @game = game
     @cursor = null
     @velocity = 200
     @enemyTimeDelta = 0
+    @scoreDelta = 0
+    @score = 0
     @enemySpawnTime = 500
 
   preload: ->
@@ -16,6 +16,7 @@ module.exports = class Game
 
   create: ->
     @game.stage.backgroundColor = '#eeeeee';
+    @scoreText = @game.add.text(@game.width/2, 0, "0", { fontSize: '12px', fill: '#999999' })
     @fpsText = new FPS(@game)
     @cursor = @game.input.keyboard.createCursorKeys()
     @createPlayer()
@@ -25,6 +26,7 @@ module.exports = class Game
     @fpsText.update()
     @updatePlayer()
     @updateEnemies()
+    @updateScore()
     @game.physics.overlap(@player, @enemies, @playerHit, null, this)
 
   createPlayer: ->
@@ -73,6 +75,12 @@ module.exports = class Game
     enemy.reset(x, y)
     enemy.angle = 90 + Math.atan2(y - toy, x - tox) * 180 / Math.PI
     @game.add.tween(enemy).to( { x: tox, y: toy }, 4000, Phaser.Easing.Linear.None).start()
+
+  updateScore: ->
+    if @game.time.now > @scoreDelta
+      @score += 1
+      @scoreText.content = @score
+      @scoreDelta = @game.time.now + 500
 
   random: (num) ->
     return Math.floor(Math.random() * num)
